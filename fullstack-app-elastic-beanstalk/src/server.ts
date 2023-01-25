@@ -44,21 +44,19 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
       if ( !image_url ) {
         return res.status(400)
-            .send(`Bad request. Please, notice that image_url is required as query parameter. For example /filteredimage?image_url=https://geeksroom.com/wp-content/uploads/2015/10/popcorn-time-logo-451x450.jpg`);
+          .send(`Bad request. Please, notice that image_url is required as query parameter. For example /filteredimage?image_url=https://geeksroom.com/wp-content/uploads/2015/10/popcorn-time-logo-451x450.jpg`);
       }
-// https://geeksroom.com/wp-content/uploads/2015/10/popcorn-time-logo-451x450.jpg
-      const filteredImage = await filterImageFromURL('https://geeksroom.com/wp-content/uploads/2015/10/popcorn-time-logo-451x450.jpg') // TODO. WHY DOESNT LIKE THIS TYPE?
-      console.log('This is filter image path>>>>> ',filteredImage)
-    
-      //res.sendFile(filteredImage);
-      res.sendFile(path.resolve('src/util/tmp/filtered.1924.jpg'));
-      // path.resolve('views/chat.html')
-      //res.send('holaaaa')
+      
+      const filteredImage = await filterImageFromURL(image_url)
+      
+      res.status(200)
+        .sendFile(filteredImage)
+
       res.on('finish', function() {
         try {
-          const dirPath = path.join(__dirname, '/util/tmp');
+          const dirPath = path.join(__dirname, '/util/tmp')
           const allFiles = fs.readdirSync(dirPath)
-          //deleteLocalFiles(allFiles)
+          deleteLocalFiles(allFiles)
         } catch(e) {
           console.log("error removing the temp file", e); 
         }
@@ -69,7 +67,6 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
           .send(`Error in the server code ===> ${e}!`);
     } 
   });
-
 
   // Start the Server
   app.listen( port, () => {

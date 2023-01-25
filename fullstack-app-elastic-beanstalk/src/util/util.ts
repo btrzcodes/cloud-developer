@@ -46,6 +46,6 @@ export function deleteLocalFiles(files: Array<string>) {
       console.log('No local file was found')
     }
   } catch (err) {
-    console.log( '----->>>>> Error while deleting local file!', err) // TODO vas por aqui y por que no se ve el file sino la url
+    console.log( '----->>>>> Error while deleting local file!', err)
   }
 }
